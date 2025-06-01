@@ -8,9 +8,7 @@ export default function ManageEmployeesPage() {
   const {
     employees,
     guests,
-    loading,
     selected,
-    setSelected,
     showModal,
     setShowModal,
     openEditModal,

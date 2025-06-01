@@ -15,21 +15,11 @@ import { useAdvanceApprovalController } from '../controllers/AdvanceApprovalCont
 const ITEMS_PER_PAGE = 5;
 
 export default function AdvanceApprovalPage() {
-  const {
-    loading,
-    allRequests,
-    pendingRequests,
-    updateStatus,
-    refetchRequests,
-  } = useAdvanceApprovalController();
+  const { loading, allRequests, pendingRequests, updateStatus } =
+    useAdvanceApprovalController();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [paginatedData, setPaginatedData] = useState([]);
-
-  useEffect(() => {
-    refetchRequests();
-  }, []);
-
   useEffect(() => {
     const sorted = [...allRequests].sort(
       (a, b) =>

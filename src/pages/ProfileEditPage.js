@@ -27,7 +27,7 @@ export default function UserProfilePage() {
         phone: userInfo.phone,
       }));
     }
-  }, [userInfo]);
+  }, [userInfo, setForm]); // setForm buraya eklendi
 
   return (
     <Container className="py-5">

@@ -1,6 +1,6 @@
 // src/pages/EmployeeSalaryPage.jsx
 
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import {
   Container,
   Card,
@@ -19,11 +19,8 @@ import { saveAs } from 'file-saver';
 export default function EmployeeSalaryPage() {
   const { loading, employeesInfo, error } = useAllEmployeesSalary();
 
-  // Date range states for exporting all-time filtered records
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
-
-  // Export this month’s records to Excel
   const handleExportCurrentMonthExcel = () => {
     const data = employeesInfo.flatMap(emp =>
       emp.monthlyRecords.map(rec => {
@@ -53,7 +50,6 @@ export default function EmployeeSalaryPage() {
     );
   };
 
-  // Export date-range filtered records to Excel
   const handleExportRangeExcel = () => {
     if (!fromDate || !toDate) {
       alert('Lütfen başlangıç ve bitiş tarihlerini seçin.');
@@ -101,35 +97,6 @@ export default function EmployeeSalaryPage() {
       `tarih_araligi_kayitlari_${new Date().toISOString().slice(0, 10)}.xlsx`,
     );
   };
-
-  // Compute filtered all-time records for display or export (not displayed in list)
-  const filteredAllTimeRecords = useMemo(() => {
-    if (!fromDate || !toDate) return [];
-    const from = new Date(fromDate);
-    const to = new Date(toDate);
-    to.setHours(23, 59, 59, 999);
-
-    return employeesInfo.flatMap(emp =>
-      emp.allRecords
-        .filter(rec => {
-          const ts = parseInt(rec.date, 10);
-          if (isNaN(ts)) return false;
-          const d = new Date(ts);
-          return d >= from && d <= to;
-        })
-        .map(rec => ({
-          employeeName: emp.name,
-          type: (rec.type || '').toLowerCase() === 'avans' ? 'Avans' : 'Prim',
-          amount: Number(rec.amount).toFixed(2),
-          date:
-            new Date(Number(rec.date)).toLocaleDateString('tr-TR') +
-            ' ' +
-            new Date(Number(rec.date)).toLocaleTimeString('tr-TR'),
-          id: rec.id,
-        })),
-    );
-  }, [employeesInfo, fromDate, toDate]);
-
   if (loading) {
     return (
       <Container className="text-center p-5">

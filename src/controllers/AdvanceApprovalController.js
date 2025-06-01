@@ -50,7 +50,8 @@ export function useAdvanceApprovalController() {
   useEffect(() => {
     if (data && data.advanceRequests) {
       const parsedData = data.advanceRequests.map(r => {
-        const timestamp = typeof r.createdAt === 'string' ? parseInt(r.createdAt) : r.createdAt;
+        const timestamp =
+          typeof r.createdAt === 'string' ? parseInt(r.createdAt) : r.createdAt;
         const parsedDate = new Date(timestamp);
 
         return {
@@ -61,11 +62,15 @@ export function useAdvanceApprovalController() {
 
       console.log(
         'Gelen veri (createdAt):',
-        parsedData.map(r => ({ id: r.id, createdAt: r.createdAt, parsed: r.parsedDate.toLocaleString('tr-TR') }))
+        parsedData.map(r => ({
+          id: r.id,
+          createdAt: r.createdAt,
+          parsed: r.parsedDate.toLocaleString('tr-TR'),
+        })),
       );
 
       const sorted = parsedData.sort(
-        (a, b) => b.parsedDate.getTime() - a.parsedDate.getTime()
+        (a, b) => b.parsedDate.getTime() - a.parsedDate.getTime(),
       );
 
       setAllRequests(sorted);
