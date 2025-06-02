@@ -10,6 +10,8 @@ import {
   FaUserCircle,
   FaSignOutAlt,
   FaServicestack,
+  FaUserMinus,
+  FaUserTimes,
 } from 'react-icons/fa';
 import { useAppointmentController } from '../controllers/AppointmentController';
 
@@ -75,6 +77,9 @@ export default function Sidebar() {
             className={navItemClass('/calisanlar')}
           >
             <FaUsersCog /> Çalışanlar
+          </Nav.Link>
+          <Nav.Link as={Link} to="/maas" className={navItemClass('/maas')}>
+            <FaUserTimes /> Maaş
           </Nav.Link>
         </Nav>
 

@@ -101,14 +101,18 @@ export default function App() {
                 isPatron ? (
                   <AdvanceApprovalPage />
                 ) : (
-                  <Navigate to="/avans" replace />
+                  <Navigate to="/login" replace />
                 )
               }
             />
             <Route
               path="/maas"
               element={
-                isPatron ? <EmployeeSalaryPage /> : <Navigate to="/maas" replace />
+                isPatron ? (
+                  <EmployeeSalaryPage />
+                ) : (
+                  <Navigate to="/login" replace />
+                )
               }
             />
           </Routes>
