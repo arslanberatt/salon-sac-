@@ -10,7 +10,6 @@ import {
   FaUserCircle,
   FaSignOutAlt,
   FaServicestack,
-  FaUserMinus,
   FaUserTimes,
 } from 'react-icons/fa';
 import { useAppointmentController } from '../controllers/AppointmentController';
