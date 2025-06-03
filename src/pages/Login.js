@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { LOGIN_EMPLOYEE } from '../controllers/authController';
-import { Container, Form, Button, Alert, Spinner } from 'react-bootstrap';
+import { Container, Form, Button, Alert, Spinner, Card } from 'react-bootstrap';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -42,42 +42,72 @@ export default function Login() {
   };
 
   return (
-    <Container style={{ maxWidth: '400px', marginTop: '100px' }}>
-      <h3 className="text-center mb-4">Giriş Yap</h3>
-      <Form onSubmit={handleSubmit}>
-        {error && <Alert variant="danger">{error}</Alert>}
+    <div
+      style={{
+        marginTop: '10vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        color: '#fff',
+      }}
+    >
+      <Card
+        style={{
+          width: '100%',
+          maxWidth: '400px',
+          padding: '30px',
+          backgroundColor: '#2e2e3e',
+          border: 'none',
+          boxShadow: '0 0 10px rgba(0,0,0,0.3)',
+        }}
+      >
+        <h3 className="text-center mb-4" style={{ color: '#ffffff' }}>
+          Giriş Yap
+        </h3>
+        <Form onSubmit={handleSubmit}>
+          {error && <Alert variant="danger">{error}</Alert>}
 
-        <Form.Group className="mb-3">
-          <Form.Label>Email adresi</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="E-posta girin"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            required
-          />
-        </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label style={{ color: '#ccc' }}>Email adresi</Form.Label>
+            <Form.Control
+              type="email"
+              placeholder="E-posta girin"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              required
+              style={{
+                backgroundColor: '#1e1e2f',
+                color: '#fff',
+              }}
+            />
+          </Form.Group>
 
-        <Form.Group className="mb-4">
-          <Form.Label>Şifre</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Şifrenizi girin"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            required
-          />
-        </Form.Group>
+          <Form.Group className="mb-4">
+            <Form.Label style={{ color: '#ccc' }}>Şifre</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Şifrenizi girin"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              required
+              style={{
+                backgroundColor: '#1e1e2f',
+                color: '#fff',
+              }}
+            />
+          </Form.Group>
 
-        <Button
-          variant="primary"
-          type="submit"
-          className="w-100"
-          disabled={loading}
-        >
-          {loading ? <Spinner animation="border" size="sm" /> : 'Giriş Yap'}
-        </Button>
-      </Form>
-    </Container>
+          <Button
+            variant="success"
+            type="submit"
+            className="w-100"
+            disabled={loading}
+            style={{ backgroundColor: '#fff', color: 'black', border: 'none' }}
+          >
+            {loading ? <Spinner animation="border" size="sm" /> : 'Giriş Yap'}
+          </Button>
+        </Form>
+      </Card>
+    </div>
   );
 }
