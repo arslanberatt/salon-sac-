@@ -13,6 +13,7 @@ import {
   FaUserTimes,
 } from 'react-icons/fa';
 import { useAppointmentController } from '../controllers/AppointmentController';
+import { logout } from '../utils/decodeToken';
 
 export default function Sidebar() {
   const location = useLocation();
@@ -97,7 +98,8 @@ export default function Sidebar() {
       <Nav className="flex-column mt-4">
         <Nav.Link
           as={Link}
-          to="/logout"
+          onClick={() => logout()}
+          to="/login"
           className="d-flex align-items-center gap-3 text-danger py-2"
         >
           <FaSignOutAlt /> Çıkış Yap

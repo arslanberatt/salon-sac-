@@ -9,3 +9,8 @@ export function decodeToken() {
     return null;
   }
 }
+
+export function logout() {
+  localStorage.removeItem('token');
+  window.location.href = '/login'; // yönlendirme ihtiyacına göre değiştirilebilir
+}
