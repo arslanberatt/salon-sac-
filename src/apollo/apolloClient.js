@@ -8,7 +8,7 @@ import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
 
 const httpLink = createHttpLink({
-  uri: process.env.REACT_APP_API_URL, // Ör: "https://api.salon-sac-mernstack.com/graphql"
+  uri: process.env.REACT_APP_API_URL,
 });
 
 // Token'ı ekleyen middleware

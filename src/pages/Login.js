@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { LOGIN_EMPLOYEE } from '../controllers/authController';
-import { Container, Form, Button, Alert, Spinner, Card } from 'react-bootstrap';
+import { Form, Button, Alert, Spinner, Card } from 'react-bootstrap';
 
 export default function Login() {
   const [email, setEmail] = useState('');
