@@ -104,7 +104,7 @@ export function useAllEmployeesSalary() {
         .filter(r => (r.type || '').toLowerCase() === 'prim')
         .reduce((sum, r) => sum + Number(r.amount || 0), 0);
 
-      const net = gross - advanceTotal + bonusTotal;
+      const net = gross - advanceTotal;
 
       return {
         id: empId,
