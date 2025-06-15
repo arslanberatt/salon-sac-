@@ -85,7 +85,8 @@ export default function CustomerManagerPage() {
                   name="phone"
                   value={form.phone}
                   onChange={handleChange}
-                  placeholder="Örn: 0555 123 4567"
+                  placeholder="Örn: 555 123 4567"
+                  maxLength={10}
                   required
                 />
               </Form.Group>

@@ -22,13 +22,16 @@ const UPDATE_APPOINTMENT = gql`
 
 // Durum güncelleme (tamamlandı / iptal)
 const UPDATE_APPOINTMENT_STATUS = gql`
-  mutation UpdateAppointmentStatus($id: ID!, $status: String!) {
-    updateAppointmentStatus(id: $id, status: $status) {
+  mutation UpdateAppointmentStatus($id: ID!, $status: String!, $totalPrice: Float) {
+    updateAppointmentStatus(id: $id, status: $status, totalPrice: $totalPrice) {
       id
       status
+      totalPrice
     }
   }
 `;
+
+
 
 export const useEditAppointmentController = (appointment, onSuccess) => {
   const { data: serviceData } = useQuery(GET_SERVICES);
@@ -92,7 +95,7 @@ export const useEditAppointmentController = (appointment, onSuccess) => {
     }
   };
 
-  const handleStatusUpdate = async (status) => {
+  const handleStatusUpdate = async (status, totalPrice) => {
     if (!appointment?.id) {
       alert('Geçersiz randevu');
       return;
@@ -100,7 +103,11 @@ export const useEditAppointmentController = (appointment, onSuccess) => {
 
     try {
       await updateStatus({
-        variables: { id: appointment.id, status },
+        variables: {
+          id: appointment.id,
+          status,
+          totalPrice: Number(totalPrice), // 💥 ZORUNLU!
+        },
       });
 
       alert(
@@ -114,6 +121,7 @@ export const useEditAppointmentController = (appointment, onSuccess) => {
       alert(`❌ Hata: ${err.message}`);
     }
   };
+
 
   return {
     form,

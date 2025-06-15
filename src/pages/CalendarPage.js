@@ -6,20 +6,9 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { Spinner, Container } from 'react-bootstrap';
 import { useAppointmentController } from '../controllers/AppointmentController';
 import AppointmentModal from '../components/AppointmentModal';
-import { gql, useMutation } from '@apollo/client';
 
 moment.locale('tr');
 const localizer = momentLocalizer(moment);
-
-// GraphQL Mutasyonu
-const UPDATE_APPOINTMENT_STATUS = gql`
-  mutation UpdateAppointmentStatus($id: ID!, $status: String!) {
-    updateAppointmentStatus(id: $id, status: $status) {
-      id
-      status
-    }
-  }
-`;
 
 export default function CalendarPage() {
   const {
@@ -33,11 +22,9 @@ export default function CalendarPage() {
     calculateDuration,
   } = useAppointmentController();
 
-  const [updateStatus] = useMutation(UPDATE_APPOINTMENT_STATUS);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
-  // Etkinlik formatı
   const calendarEvents = appointments.map(appt => ({
     id: appt.id,
     title: `${getCustomerName(appt.customerId)} • ${appt.status}`,
@@ -56,32 +43,10 @@ export default function CalendarPage() {
     setShowModal(false);
   };
 
-  const handleStatusUpdate = async status => {
-    if (!selectedEvent?.id) return;
-
-    try {
-      await updateStatus({
-        variables: { id: selectedEvent.id, status },
-      });
-
-      alert(
-        `Randevu ${status === 'tamamlandi' ? 'tamamlandı' : 'iptal edildi'}.`,
-      );
-      setShowModal(false);
-      refetchAppointments?.();
-    } catch (err) {
-      alert(`❌ Hata: ${err.message}`);
-    }
-  };
-
   const getEventStyle = event => {
     const status = event.original.status;
     const backgroundColor =
-      status === 'tamamlandi'
-        ? '#28a745'
-        : status === 'iptal'
-        ? '#dc3545'
-        : '#ffc107';
+      status === 'tamamlandi' ? '#28a745' : status === 'iptal' ? '#dc3545' : '#ffc107';
 
     return {
       style: {
@@ -97,7 +62,7 @@ export default function CalendarPage() {
 
   return (
     <Container fluid className="p-3">
-      <h4 className="fw-bold mb-4"> Randevu Takvimi</h4>
+      <h4 className="fw-bold mb-4">Randevu Takvimi</h4>
 
       {loading ? (
         <div
@@ -114,12 +79,7 @@ export default function CalendarPage() {
           endAccessor="end"
           defaultView="week"
           views={['month', 'week', 'day']}
-          selectable
-          style={{
-            height: '80vh',
-            borderRadius: '12px',
-            backgroundColor: '#fff',
-          }}
+          style={{ height: '80vh', borderRadius: '12px', backgroundColor: '#fff' }}
           step={120}
           timeslots={1}
           min={new Date(1970, 1, 1, 7, 0)}
@@ -150,7 +110,10 @@ export default function CalendarPage() {
           formatTime={formatTime}
           calculateDuration={calculateDuration}
           getServicesByIds={getServicesByIds}
-          onStatusUpdate={handleStatusUpdate}
+          onStatusUpdate={() => {
+            closeModal();
+            refetchAppointments?.();
+          }}
         />
       )}
     </Container>

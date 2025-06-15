@@ -52,17 +52,6 @@ export default function EmployeeEditModal({
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Avans Bakiyesi</Form.Label>
-            <Form.Control
-              type="number"
-              value={form.advanceBalance}
-              onChange={e =>
-                setForm(prev => ({ ...prev, advanceBalance: e.target.value }))
-              }
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
             <Form.Label>Şifre Onayı</Form.Label>
             <Form.Control
               type="password"

@@ -72,6 +72,11 @@ export const useAddAppointmentController = (onSuccess) => {
     startTime: '',
     notes: '',
   });
+  function toTurkishISO(datetimeStr) {
+    const localDate = new Date(datetimeStr);
+    const turkishDate = new Date(localDate.getTime()); // 3 saat ileri
+    return turkishDate.toISOString();
+  }
 
   // Diğer state'ler
   const [totalPrice, setTotalPrice] = useState(0);
@@ -120,9 +125,11 @@ export const useAddAppointmentController = (onSuccess) => {
       await addAppointment({
         variables: {
           ...form,
+          startTime: toTurkishISO(form.startTime), // burada dönüştürüyoruz
           totalPrice,
         },
       });
+
 
       alert('✅ Randevu başarıyla eklendi.');
       if (typeof onSuccess === 'function') onSuccess();

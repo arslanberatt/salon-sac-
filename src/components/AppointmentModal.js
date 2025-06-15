@@ -1,5 +1,13 @@
-import React from 'react';
-import { Modal, Button, Badge, ListGroup } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import {
+  Modal,
+  Button,
+  Badge,
+  ListGroup,
+  Form,
+  InputGroup,
+} from 'react-bootstrap';
+import { useEditAppointmentController } from '../controllers/EditAppointmentController';
 
 export default function AppointmentModal({
   show,
@@ -11,8 +19,25 @@ export default function AppointmentModal({
   calculateDuration,
   getServicesByIds,
   onEdit,
-  onStatusUpdate, 
+  onStatusUpdate,
 }) {
+  const {
+    handleStatusUpdate,
+  } = useEditAppointmentController(appointment, () => {
+    onStatusUpdate?.();
+    handleClose();
+  });
+
+  const [editablePrice, setEditablePrice] = useState(0);
+
+  useEffect(() => {
+    if (appointment) {
+      const services = getServicesByIds(appointment.serviceIds || []);
+      const totalServicePrice = services.reduce((sum, s) => sum + s.price, 0);
+      setEditablePrice(totalServicePrice);
+    }
+  }, [appointment, getServicesByIds]);
+
   if (!appointment) return null;
 
   const employee = getEmployeeName(appointment.employeeId);
@@ -66,25 +91,42 @@ export default function AppointmentModal({
 
         <hr />
         <h6>Hizmetler</h6>
-        <ListGroup>
+        <ListGroup className="mb-3">
           {services.map(s => (
             <ListGroup.Item key={s.id}>
               <strong>{s.title}</strong> — ₺{s.price} / {s.duration} dk
             </ListGroup.Item>
           ))}
         </ListGroup>
+
+        {!isCompleted && !isCanceled && (
+          <Form.Group>
+            <Form.Label>Toplam Ödeme Tutarı</Form.Label>
+            <InputGroup>
+              <InputGroup.Text>₺</InputGroup.Text>
+              <Form.Control
+                type="number"
+                value={editablePrice}
+                onChange={e => setEditablePrice(Number(e.target.value))}
+              />
+            </InputGroup>
+          </Form.Group>
+        )}
       </Modal.Body>
 
       <Modal.Footer className="d-flex justify-content-between">
         <div className="d-flex gap-2">
           {!isCompleted && !isCanceled && (
             <>
-              <Button variant="danger" onClick={() => onStatusUpdate('iptal')}>
+              <Button
+                variant="danger"
+                onClick={() => handleStatusUpdate('iptal', 0)}
+              >
                 İptal Et
               </Button>
               <Button
                 variant="success"
-                onClick={() => onStatusUpdate('tamamlandi')}
+                onClick={() => handleStatusUpdate('tamamlandi', editablePrice)}
               >
                 Ödeme Al
               </Button>
